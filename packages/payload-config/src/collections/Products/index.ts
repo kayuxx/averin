@@ -1,7 +1,6 @@
 import { CallToAction } from "@repo/payload/blocks/CallToAction/config";
 import { MediaBlock } from "@repo/payload/blocks/MediaBlock/config";
 import { slugField } from "payload";
-import { generatePreviewPath } from "@repo/payload/utilities/generatePreviewPath";
 import { CollectionOverride } from "@payloadcms/plugin-ecommerce/types";
 import {
   MetaDescriptionField,
@@ -26,20 +25,6 @@ export const ProductsCollection: CollectionOverride = ({
   admin: {
     ...defaultCollection?.admin,
     defaultColumns: ["title", "enableVariants", "_status", "variants.variants"],
-    livePreview: {
-      url: ({ data, req }) =>
-        generatePreviewPath({
-          slug: data?.slug,
-          collection: "products",
-          req,
-        }),
-    },
-    preview: (data, { req }) =>
-      generatePreviewPath({
-        slug: data?.slug as string,
-        collection: "products",
-        req,
-      }),
     useAsTitle: "title",
   },
   defaultPopulate: {
@@ -68,7 +53,9 @@ export const ProductsCollection: CollectionOverride = ({
                 features: ({ rootFeatures }) => {
                   return [
                     ...rootFeatures,
-                    HeadingFeature({ enabledHeadingSizes: ["h1", "h2", "h3", "h4"] }),
+                    HeadingFeature({
+                      enabledHeadingSizes: ["h1", "h2", "h3", "h4"],
+                    }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
